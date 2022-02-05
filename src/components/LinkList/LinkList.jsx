@@ -2,7 +2,7 @@ import React from 'react';
 import Link from '../Link/Link';
 import { useQuery, gql } from '@apollo/client';
 
-const FEED_QUERY = gql`
+export const FEED_QUERY = gql`
   {
     feed {
       id
@@ -11,10 +11,21 @@ const FEED_QUERY = gql`
         createdAt
         url
         description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
       }
     }
   }
 `;
+
 const LinkList = () => {
   //   const linksToRender = [
   //     {
@@ -38,8 +49,8 @@ const LinkList = () => {
       {loading && <span>Loading items!</span>}
       {data && (
         <>
-          {data.feed.links.map((link) => (
-            <Link key={link.id} link={link} />
+          {data.feed.links.map((link, index) => (
+            <Link key={link.id} link={link} index={index} />
           ))}
         </>
       )}
